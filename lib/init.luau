@@ -102,6 +102,7 @@ export type internal = {
 	getInstanceName: (instance: Instance) -> string,
 	change_env_const: (envConstant: envConstants, newValue: any) -> (),
 	waitFor: (name: string) -> any,
+	load_modules: (container: Instance, useDescendants: boolean, predicate: predicate<Instance>?) -> any,
 }
 
 -- metatables
@@ -211,7 +212,7 @@ end
 
 
 -- internal shared module loader
-local function load_modules(container: Instance, useDescendants: boolean, predicate: predicate<Instance>?): any
+internal.load_modules = function(container: Instance, useDescendants: boolean, predicate: predicate<Instance>?): any
 	local containerName = internal.getInstanceName(container)
 	internal.log.print(`starting {if useDescendants then "load_descendants" else "load_children"} in {containerName}`)
 
@@ -249,11 +250,11 @@ local function load_modules(container: Instance, useDescendants: boolean, predic
 end
 
 loader.load_children = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
-	return load_modules(container, false, predicate)
+	return internal.load_modules(container, false, predicate)
 end
 
 loader.load_descendants = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
-	return load_modules(container, true, predicate)
+	return internal.load_modules(container, true, predicate)
 end
 
 -- expose internal functions
