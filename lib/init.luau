@@ -1,4 +1,4 @@
---!nocheck
+--!strict
 --!optimize 2
 
 --[[
@@ -101,7 +101,7 @@ export type internal = {
 	safeRequire: (module: ModuleScript) -> any,
 	getInstanceName: (instance: Instance) -> string,
 	change_env_const: (envConstant: envConstants, newValue: any) -> (),
-	waitFor: (name: string) -> Promise<any>,
+	waitFor: (name: string) -> any,
 }
 
 -- metatables
