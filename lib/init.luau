@@ -75,7 +75,7 @@
 --]]
 
 -- requirements
-local promise = require("@self/use/promise")
+local promise = require("@self/promise")
 
 -- types
 export type envConstants = "LOGGING_ENABLED" | "LOGGING_PREFIX" | "USE_FULL_NAME"
