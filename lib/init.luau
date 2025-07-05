@@ -209,61 +209,17 @@ internal.safeRequire = function(module: ModuleScript): any
 	end)
 end
 
--- load child modules in container
-loader.load_children = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
+
+-- internal shared module loader
+local function load_modules(container: Instance, useDescendants: boolean, predicate: predicate<Instance>?): any
 	local containerName = internal.getInstanceName(container)
-	internal.log.print(`starting load_children in {containerName}`)
+	internal.log.print(`starting {if useDescendants then "load_descendants" else "load_children"} in {containerName}`)
 
 	local t0 = os.clock()
-
-	local children = container:GetChildren()
+	local instances = if useDescendants then container:GetDescendants() else container:GetChildren()
 	local filtered = {}
 
-	for _, child in ipairs(children) do
-		if not predicate or predicate(child) then
-			table.insert(filtered, child)
-		end
-	end
-
-	local moduleCount = 0
-	local promises = {}
-	for _, child in ipairs(filtered) do
-		if child:IsA("ModuleScript") then
-			moduleCount += 1
-			table.insert(promises, internal.safeRequire(child))
-		else
-			table.insert(promises, promise.resolve())
-		end
-	end
-
-	return promise.all(promises)
-		:andThen(function()
-			return promise.all(startedPromises)
-		end)
-		:andThen(function()
-			if LOGGING_ENABLED then
-				local elapsed = (os.clock() - t0) * 1000
-				internal.log.print(`successfully loaded {moduleCount} modules in {string.format("%.2f", elapsed)}ms`)
-			end
-			return true
-		end)
-		:catch(function(err)
-			internal.log.warn(`failed to load one or more children from {containerName}: {err}`)
-			return false
-		end)
-end
-
--- load descendant modules in container
-loader.load_descendants = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
-	local containerName = internal.getInstanceName(container)
-	internal.log.print(`starting load_descendants in {containerName}`)
-
-	local t0 = os.clock()
-
-	local descendants = container:GetDescendants()
-	local filtered = {}
-
-	for _, inst in ipairs(descendants) do
+	for _, inst in ipairs(instances) do
 		if inst:IsA("ModuleScript") and (not predicate or predicate(inst)) then
 			table.insert(filtered, inst)
 		end
@@ -287,9 +243,17 @@ loader.load_descendants = function(self: loader, container: Instance, predicate:
 			return true
 		end)
 		:catch(function(err)
-			internal.log.warn(`failed to load one or more descendants from {containerName}: {err}`)
+			internal.log.warn(`failed to load one or more modules from {containerName}: {err}`)
 			return false
 		end)
+end
+
+loader.load_children = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
+	return load_modules(container, false, predicate)
+end
+
+loader.load_descendants = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
+	return load_modules(container, true, predicate)
 end
 
 -- expose internal functions
