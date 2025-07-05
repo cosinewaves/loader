@@ -228,7 +228,7 @@ local function load_modules(container: Instance, useDescendants: boolean, predic
 	local moduleCount = #filtered
 	local promises = {}
 	for _, moduleScript in ipairs(filtered) do
-		table.insert(promises, internal.safeRequire(moduleScript))
+		table.insert(promises, internal.safeRequire(moduleScript :: ModuleScript))
 	end
 
 	return promise.all(promises)
