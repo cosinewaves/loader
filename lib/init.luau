@@ -74,10 +74,6 @@
 
 --]]
 
--- services
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local RunService = game:GetService("RunService")
-
 -- requirements
 local promise = require("@self/use/promise")
 
