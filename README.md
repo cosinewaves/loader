@@ -2,7 +2,7 @@
 
 A lightweight, lifecycle-aware module loader for Roblox. This utility ensures a consistent `init → start` boot process across your game’s services and modules. Designed for modular architecture, dependency safety, and async initialization.
 
-> ⚠️ This is a **Promise-based** module loader. You should be familiar with [Promise](https://roblox.github.io/promises/) usage in Roblox to use it effectively.
+> ⚠️ This is a **Promise-based** module loader. You should be familiar with [Promise](https://eryn.io/roblox-lua-promise/) usage in Roblox to use it effectively.
 
 ---
 
