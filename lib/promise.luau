@@ -10,7 +10,7 @@ local MODE_KEY_METATABLE = { __mode = "k" }
 
 local function isCallable(value)
 	if type(value) == "function" then
-		return true 
+		return true
 	end
 
 	if type(value) == "table" then
@@ -1405,7 +1405,7 @@ function Promise.prototype:_finally(traceback, finallyHandler)
 						:catch(function(...)
 							reject(...)
 						end)
-						return
+					return
 				else
 					resolve(self)
 					return
