@@ -264,7 +264,12 @@ loader.load_descendants = function(self: loader, container: Instance, predicate:
 	return internal.load_modules(container, true, predicate) :: any
 end
 
--- expose internal functions
+--[=[
+	expose internal class
+
+	@within loader
+	@return internal
+]=]
 loader.exposeInternal = function(): internal
 	return internal :: internal
 end
