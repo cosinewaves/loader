@@ -1,8 +1,6 @@
 --!strict
 --!optimize 2
 
--- todo
--- add types for everything
 
 -- requirements
 local promise = require("@self/promise")
