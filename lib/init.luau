@@ -33,6 +33,12 @@ export type internal = {
 }
 
 -- metatables
+
+--[=[
+	@class loader
+
+	This is my first class.
+]=]
 local loader = {} :: loader
 local internal = {} :: internal
 
