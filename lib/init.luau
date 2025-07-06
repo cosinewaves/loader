@@ -1,7 +1,6 @@
 --!strict
 --!optimize 2
 
-
 -- requirements
 local promise = require("@self/promise")
 
@@ -12,7 +11,7 @@ export type lifecycleModule = {
 	init: (() -> any)?,
 	start: (() -> any)?,
 	waitFor: ((moduleName: string) -> any)?,
-	[string]: any
+	[string]: any,
 }
 export type loader = {
 	load_children: (self: loader, container: Instance, predicate: predicate<Instance>?) -> any,
@@ -49,15 +48,21 @@ local startedPromises: { [string]: any } = {}
 -- internal logging
 internal.log = {
 	print = function(msg: string): ()
-		if not LOGGING_ENABLED then return end
+		if not LOGGING_ENABLED then
+			return
+		end
 		print(LOGGING_PREFIX .. msg)
 	end,
 	warn = function(msg: string): ()
-		if not LOGGING_ENABLED then return end
+		if not LOGGING_ENABLED then
+			return
+		end
 		warn(LOGGING_PREFIX .. msg)
 	end,
 	error = function(msg: string): ()
-		if not LOGGING_ENABLED then return end
+		if not LOGGING_ENABLED then
+			return
+		end
 		error(LOGGING_PREFIX .. msg)
 	end,
 }
@@ -141,29 +146,29 @@ internal.safeRequire = function(module: ModuleScript): any
 	end) :: any
 end
 
-
 -- internal shared module loader
 internal.load_modules = function(container: Instance, useDescendants: boolean, predicate: predicate<Instance>?): any
 	local containerName: string = internal.getInstanceName(container)
 	internal.log.print(`{if useDescendants then "loading descendants" else "loading children"} in {containerName}`)
 
 	local t0: number = os.clock()
-	local instances: {Instance} = if useDescendants then container:GetDescendants() else container:GetChildren()
-	local filtered: {ModuleScript} = {}
+	local instances: { Instance } = if useDescendants then container:GetDescendants() else container:GetChildren()
+	local filtered: { ModuleScript } = {}
 
-	for _: number, inst: Instance in ipairs(instances :: {Instance}) do
+	for _: number, inst: Instance in ipairs(instances :: { Instance }) do
 		if inst:IsA("ModuleScript") and (not predicate or predicate(inst :: Instance)) then
 			table.insert(filtered, inst)
 		end
 	end
 
 	local moduleCount: number = #filtered
-	local promises: {any} = {}
-	for _: number, moduleScript: ModuleScript in ipairs(filtered :: {ModuleScript}) do
+	local promises: { any } = {}
+	for _: number, moduleScript: ModuleScript in ipairs(filtered :: { ModuleScript }) do
 		table.insert(promises, internal.safeRequire(moduleScript :: ModuleScript))
 	end
 
-	return promise.all(promises)
+	return promise
+		.all(promises)
 		:andThen(function()
 			return promise.all(startedPromises) :: any
 		end)
