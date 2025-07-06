@@ -137,6 +137,14 @@ internal.waitFor = function(name: string): any
 end
 
 -- safely require + run lifecycle methods
+
+--[=[
+	safely require and run lifecycle methods
+
+	@within internal
+	@param module ModuleScript 
+	@return any
+]=]
 internal.safeRequire = function(module: ModuleScript): any
 	local moduleName: string = internal.getInstanceName(module)
 	return promise.new(function(resolve, reject)
