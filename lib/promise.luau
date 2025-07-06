@@ -958,6 +958,7 @@ function Promise.each(list, predicate)
 		end
 
 		resolve(results)
+		return
 	end)
 end
 
@@ -1404,8 +1405,10 @@ function Promise.prototype:_finally(traceback, finallyHandler)
 						:catch(function(...)
 							reject(...)
 						end)
+						return
 				else
 					resolve(self)
+					return
 				end
 			end
 		end
@@ -1686,6 +1689,7 @@ function Promise.prototype:_resolve(...)
 			end
 
 			self:_reject(...)
+			return
 		end)
 
 		if promise._status == Promise.Status.Cancelled then
@@ -1955,6 +1959,7 @@ function Promise.fromEvent(event, predicate)
 		end
 
 		onCancel(disconnect)
+		return
 	end)
 end
 
