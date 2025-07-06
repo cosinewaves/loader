@@ -84,6 +84,14 @@ internal.log = {
 -- get instance name or fullname
 -- i lowkey implemented this cause i didn't want to print the whole
 -- path name, however it could see useful in debug purposes
+
+--[=[
+	formats the instance's name, used for debug purposes
+
+	@within internal
+	@param instance instance -- the instance to find the name of
+	@return number -- formatted name
+]=]
 internal.getInstanceName = function(instance: Instance): string
 	return USE_FULL_NAME and instance:GetFullName() or instance.Name
 end
