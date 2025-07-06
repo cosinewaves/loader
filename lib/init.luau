@@ -37,7 +37,7 @@ export type internal = {
 --[=[
 	@class loader
 
-	This is my first class.
+	a lightweight, lifecycle-aware & promise-based module loader for roblox. designed for modular architecture, dependency safety, and async initialisation.
 ]=]
 local loader = {} :: loader
 local internal = {} :: internal
