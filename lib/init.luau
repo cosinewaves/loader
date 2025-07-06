@@ -87,12 +87,12 @@ end
 -- DataService - as loading data before player has properly
 -- been setup will cause errors
 internal.waitFor = function(name: string): any
-	local startPromise = startedPromises[name]
-	if startPromise then
-		return startPromise
+	local startPromise: any = startedPromises[name]
+	if startPromise :: any then
+		return startPromise :: any
 	else
 		internal.log.warn(`waitFor called for unknown module: {name}`)
-		return promise.reject(`no module named {name} has been loaded yet`)
+		return promise.reject(`no module named {name} has been loaded yet`) :: any
 	end
 end
 
