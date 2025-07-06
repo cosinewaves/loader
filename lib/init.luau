@@ -141,7 +141,7 @@ end
 -- internal shared module loader
 internal.load_modules = function(container: Instance, useDescendants: boolean, predicate: predicate<Instance>?): any
 	local containerName = internal.getInstanceName(container)
-	internal.log.print(`starting {if useDescendants then "load_descendants" else "load_children"} in {containerName}`)
+	internal.log.print(`{if useDescendants then "loading descendants" else "loading children"} in {containerName}`)
 
 	local t0 = os.clock()
 	local instances = if useDescendants then container:GetDescendants() else container:GetChildren()
