@@ -100,7 +100,7 @@ end
 	change the loader's constants, used to modify the behaviour of loader at runtime
 
 	@within internal
-	@param envConstant envConstants 
+	@param envConstant envConstants -- "LOGGING_ENABLED" | "LOGGING_PREFIX" | "USE_FULL_NAME"
 	@param newValue any
 	@return ()
 ]=]
