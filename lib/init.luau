@@ -194,7 +194,7 @@ end
 --[=[
 	internal module loader function
 
-	@within loader
+	@within internal
 	@param container Instance
 	@param useDescendants boolean
 	@param predicate predicate<Instance>? 
@@ -238,6 +238,13 @@ internal.load_modules = function(container: Instance, useDescendants: boolean, p
 		end) :: any
 end
 
+--[=[
+	wait for a module to be loaded, then you can use promise methods, like ':andThen()' to do stuff in your module
+
+	@within loader
+	@param name string 
+	@return any
+]=]
 loader.load_children = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
 	return internal.load_modules(container, false, predicate) :: any
 end
