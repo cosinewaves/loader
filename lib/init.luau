@@ -118,6 +118,14 @@ end
 -- for example, wait for PlayerService to start before starting
 -- DataService - as loading data before player has properly
 -- been setup will cause errors
+
+--[=[
+	wait for a module to be loaded, then you can use promise methods, like ':andThen()' to do stuff in your module
+
+	@within loader
+	@param name string 
+	@return any
+]=]
 internal.waitFor = function(name: string): any
 	local startPromise: any = startedPromises[name]
 	if startPromise :: any then
