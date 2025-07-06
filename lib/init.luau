@@ -96,7 +96,14 @@ internal.getInstanceName = function(instance: Instance): string
 	return USE_FULL_NAME and instance:GetFullName() or instance.Name
 end
 
--- update runtime config
+--[=[
+	change the loader's constants, used to modify the behaviour of loader at runtime
+
+	@within internal
+	@param envConstant envConstants 
+	@param newValue any
+	@return ()
+]=]
 internal.change_env_const = function(envConstant: envConstants, newValue: any): ()
 	if envConstant == "LOGGING_ENABLED" then
 		LOGGING_ENABLED = newValue
