@@ -122,7 +122,7 @@ end
 --[=[
 	wait for a module to be loaded, then you can use promise methods, like ':andThen()' to do stuff in your module
 
-	@within loader
+	@within internal
 	@param name string 
 	@return any
 ]=]
@@ -241,7 +241,7 @@ end
 --[=[
 	load children of a instance
 
-	@method
+	@method load_children
 	@within loader
 	@param container Instance
 	@param predicate predicate<Instance>? 
@@ -254,7 +254,7 @@ end
 --[=[
 	load descendants of a module
 
-	@method
+	@method load_descendants
 	@within loader
 	@param container Instance
 	@param predicate predicate<Instance>? 
