@@ -58,6 +58,7 @@ waitFor(name: string): Promise<any>
 ```lua
 loader.load_children(container: Instance, predicate?: (Instance) -> boolean): Promise<boolean>
 -- Loads all ModuleScripts that are direct children of the container.
+-- If a predicate is provided, only ModuleScripts where predicate(module) == true will be loaded.
 -- ✅ Optional predicate to filter modules.
 -- ✅ Returns a Promise that resolves after all modules are started.
 ```
@@ -71,10 +72,46 @@ Loader:load_children(game.ReplicatedStorage.Modules)
 ```lua
 loader.load_descendants(container: Instance, predicate?: (Instance) -> boolean): Promise<boolean>
 -- Loads all ModuleScripts found recursively in the container’s descendants.
+-- If a predicate is provided, only ModuleScripts where predicate(module) == true will be loaded.
 ```
 
 ```lua
 Loader:load_descendants(game.ServerScriptService.Services)
+```
+
+⸻
+
+🔍 Predicate Examples
+
+Here are some example predicates you can pass into `load_children` or `load_descendants` to control which modules are loaded:
+
+```lua
+-- Load only modules whose name ends with "Service"
+local function endsWithService(module)
+    return module.Name:match("Service$") ~= nil
+end
+
+Loader:load_descendants(script.Modules, endsWithService)
+```
+
+```lua
+-- Load only modules that have a specific tag
+local CollectionService = game:GetService("CollectionService")
+
+local function isTagged(module)
+    return CollectionService:HasTag(module, "LoadMe")
+end
+
+Loader:load_descendants(script.Modules, isTagged)
+```
+
+```lua
+-- Load only modules in a specific namespace
+local function isCoreModule(module)
+    return module.Name:sub(1, 5) == "Core_"
+end
+
+Loader:load_children(script.Modules, isCoreModule)
 ```
 
 ⸻
@@ -115,11 +152,12 @@ safeRequire(moduleScript: ModuleScript): Promise
 ⸻
 
 ✅ Best Practices
-• ✅ Use init() for setup and start() for logic execution.
-• ✅ Use waitFor() to ensure dependent modules are ready.
-• ❌ Avoid require() chaining that assumes a module is ready immediately.
-• ❌ Don’t rely on circular module dependencies.
-• ✅ Use loader.load_descendants(...) during game bootstrap from a central “Modules” folder.
+
+- ✅ Use `init()` for setup logic and `start()` for beginning execution.
+- ✅ Use `waitFor("ModuleName")` to safely coordinate between modules.
+- ✅ Use `loader.load_descendants(...)` to recursively load all modules from a centralized folder.
+- ❌ Avoid chaining `require()` calls that assume the target module has already completed startup.
+- ❌ Don’t create circular dependencies between modules.
 
 ⸻
 
