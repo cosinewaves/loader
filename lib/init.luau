@@ -5,8 +5,19 @@
 local promise = require("./packages/promise")
 
 -- types
+
+--[=[
+@type envConstants "LOGGING_ENABLED" | "LOGGING_PREFIX" | "USE_FULL_NAME"
+@within loader
+--]=]
 export type envConstants = "LOGGING_ENABLED" | "LOGGING_PREFIX" | "USE_FULL_NAME"
+
+--[=[
+@type predicate<T> (T) -> boolean
+@within loader
+--]=]
 export type predicate<T> = (T) -> boolean
+
 export type lifecycleModule = {
 	init: (() -> any)?,
 	start: (() -> any)?,
