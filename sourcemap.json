@@ -1,1 +1,18 @@
-{"name":"loader","className":"DataModel","filePaths":["default.project.json"],"children":[{"name":"ReplicatedStorage","className":"ReplicatedStorage","children":[{"name":"loader","className":"ModuleScript","filePaths":["lib/init.luau"],"children":[{"name":"promise","className":"ModuleScript","filePaths":["lib/promise.luau"]}]}]}]}
+{
+  "name": "loader",
+  "className": "DataModel",
+  "filePaths": ["default.project.json"],
+  "children": [
+    {
+      "name": "ReplicatedStorage",
+      "className": "ReplicatedStorage",
+      "children": [
+        {
+          "name": "loader",
+          "className": "ModuleScript",
+          "filePaths": ["lib/init.luau"]
+        }
+      ]
+    }
+  ]
+}
