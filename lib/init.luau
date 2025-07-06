@@ -239,16 +239,27 @@ internal.load_modules = function(container: Instance, useDescendants: boolean, p
 end
 
 --[=[
-	wait for a module to be loaded, then you can use promise methods, like ':andThen()' to do stuff in your module
+	load children of a instance
 
+	@method
 	@within loader
-	@param name string 
+	@param container Instance
+	@param predicate predicate<Instance>? 
 	@return any
 ]=]
 loader.load_children = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
 	return internal.load_modules(container, false, predicate) :: any
 end
 
+--[=[
+	load descendants of a module
+
+	@method
+	@within loader
+	@param container Instance
+	@param predicate predicate<Instance>? 
+	@return any
+]=]
 loader.load_descendants = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
 	return internal.load_modules(container, true, predicate) :: any
 end
