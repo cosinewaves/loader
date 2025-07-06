@@ -40,6 +40,12 @@ export type internal = {
 	a lightweight, lifecycle-aware & promise-based module loader for roblox. designed for modular architecture, dependency safety, and async initialisation.
 ]=]
 local loader = {} :: loader
+
+--[=[
+	@class internal
+
+	internal functions and properties, accessible by exposure
+]=]
 local internal = {} :: internal
 
 -- constants
