@@ -191,7 +191,15 @@ internal.safeRequire = function(module: ModuleScript): any
 	end) :: any
 end
 
--- internal shared module loader
+--[=[
+	internal module loader function
+
+	@within loader
+	@param container Instance
+	@param useDescendants boolean
+	@param predicate predicate<Instance>? 
+	@return any
+]=]
 internal.load_modules = function(container: Instance, useDescendants: boolean, predicate: predicate<Instance>?): any
 	local containerName: string = internal.getInstanceName(container)
 	internal.log.print(`{if useDescendants then "loading descendants" else "loading children"} in {containerName}`)
