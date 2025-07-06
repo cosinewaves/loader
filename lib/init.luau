@@ -100,26 +100,26 @@ end
 internal.safeRequire = function(module: ModuleScript): any
 	local moduleName: string = internal.getInstanceName(module)
 	return promise.new(function(resolve, reject)
-		local ok, result = pcall(require, module)
-		if not ok then
+		local ok: boolean, result: any = pcall(require, module)
+		if not ok :: boolean then
 			internal.log.warn(`failed to require {moduleName}: {result}`)
 			reject(result)
 			return
 		end
 
 		internal.log.print(`required module: {moduleName}`)
-		local mod = result :: lifecycleModule
-		loadedModules[moduleName] = mod
+		local mod: lifecycleModule = result
+		loadedModules[moduleName] = mod :: lifecycleModule
 
 		-- add waitFor to module so they can call it internally
 		mod.waitFor = internal.waitFor
 
 		-- init lifecycle
-		local initOk, initErr = true, nil
+		local initOk: boolean, initErr: boolean = true, nil
 		if typeof(mod.init) == "function" then
 			internal.log.print(`calling init on {moduleName}`)
 			initOk, initErr = pcall(mod.init)
-			if not initOk then
+			if not initOk :: boolean then
 				internal.log.warn(`init failed for {moduleName}: {initErr}`)
 			end
 		end
@@ -128,16 +128,19 @@ internal.safeRequire = function(module: ModuleScript): any
 		startedPromises[moduleName] = promise.new(function(startResolve)
 			if typeof(mod.start) == "function" then
 				internal.log.print(`calling start on {moduleName}`)
-				local success, err = pcall(mod.start)
-				if not success then
+				local success: boolean, err: any = pcall(mod.start)
+				if not success :: boolean then
 					internal.log.warn(`start failed for {moduleName}: {err}`)
+					return
 				end
 			end
 			startResolve(true)
+			return
 		end)
 
 		resolve(mod)
-	end)
+		return
+	end) :: any
 end
 
 
