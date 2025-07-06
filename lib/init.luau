@@ -146,32 +146,32 @@ end
 
 -- internal shared module loader
 internal.load_modules = function(container: Instance, useDescendants: boolean, predicate: predicate<Instance>?): any
-	local containerName = internal.getInstanceName(container)
+	local containerName: string = internal.getInstanceName(container)
 	internal.log.print(`{if useDescendants then "loading descendants" else "loading children"} in {containerName}`)
 
-	local t0 = os.clock()
-	local instances = if useDescendants then container:GetDescendants() else container:GetChildren()
-	local filtered = {}
+	local t0: number = os.clock()
+	local instances: {Instance} = if useDescendants then container:GetDescendants() else container:GetChildren()
+	local filtered: {ModuleScript} = {}
 
-	for _, inst in ipairs(instances) do
-		if inst:IsA("ModuleScript") and (not predicate or predicate(inst)) then
+	for _: number, inst: Instance in ipairs(instances :: {Instance}) do
+		if inst:IsA("ModuleScript") and (not predicate or predicate(inst :: Instance)) then
 			table.insert(filtered, inst)
 		end
 	end
 
-	local moduleCount = #filtered
-	local promises = {}
-	for _, moduleScript in ipairs(filtered) do
+	local moduleCount: number = #filtered
+	local promises: {any} = {}
+	for _: number, moduleScript: ModuleScript in ipairs(filtered :: {ModuleScript}) do
 		table.insert(promises, internal.safeRequire(moduleScript :: ModuleScript))
 	end
 
 	return promise.all(promises)
 		:andThen(function()
-			return promise.all(startedPromises)
+			return promise.all(startedPromises) :: any
 		end)
 		:andThen(function()
-			if LOGGING_ENABLED then
-				local elapsed = (os.clock() - t0) * 1000
+			if LOGGING_ENABLED :: boolean then
+				local elapsed: number = (os.clock() - t0) * 1000
 				internal.log.print(`successfully loaded {moduleCount} modules in {string.format("%.2f", elapsed)}ms`)
 			end
 			return true
@@ -179,20 +179,20 @@ internal.load_modules = function(container: Instance, useDescendants: boolean, p
 		:catch(function(err)
 			internal.log.warn(`failed to load one or more modules from {containerName}: {err}`)
 			return false
-		end)
+		end) :: any
 end
 
 loader.load_children = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
-	return internal.load_modules(container, false, predicate)
+	return internal.load_modules(container, false, predicate) :: any
 end
 
 loader.load_descendants = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
-	return internal.load_modules(container, true, predicate)
+	return internal.load_modules(container, true, predicate) :: any
 end
 
 -- expose internal functions
 loader.exposeInternal = function(): internal
-	return internal
+	return internal :: internal
 end
 
 return loader :: loader
