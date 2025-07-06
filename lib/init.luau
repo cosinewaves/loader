@@ -59,12 +59,6 @@ local startedPromises: { [string]: any } = {}
 
 -- internal logging
 internal.log = {
-
-	--[=[
-	print to console
-
-	@param msg string
-	]=]
 	print = function(msg: string): ()
 		if not LOGGING_ENABLED then
 			return
@@ -72,11 +66,6 @@ internal.log = {
 		print(LOGGING_PREFIX .. msg)
 	end,
 
-	--[=[
-	warn to console
-
-	@param msg string
-	]=]
 	warn = function(msg: string): ()
 		if not LOGGING_ENABLED then
 			return
@@ -84,11 +73,6 @@ internal.log = {
 		warn(LOGGING_PREFIX .. msg)
 	end,
 
-	--[=[
-	error to console
-
-	@param msg string
-	]=]
 	error = function(msg: string): ()
 		if not LOGGING_ENABLED then
 			return
