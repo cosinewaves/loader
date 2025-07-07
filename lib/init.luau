@@ -1,7 +1,8 @@
 --!strict
 --!optimize 2
 
--- TODO DOCS
+-- finish docs, use ai to rewrite comments
+-- add interface types
 
 -- requirements
 local promise = require("./packages/promise")
