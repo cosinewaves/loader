@@ -1,6 +1,8 @@
 --!strict
 --!optimize 2
 
+-- TODO DOCS
+
 -- requirements
 local promise = require("./packages/promise")
 
@@ -58,6 +60,7 @@ local loader = {} :: loader
 	internal functions and properties, accessible by exposure
 ]=]
 local internal = {} :: internal
+internal.log = {} :: log
 
 -- constants
 local LOGGING_ENABLED: boolean = true
@@ -69,28 +72,26 @@ local loadedModules: { [string]: lifecycleModule } = {}
 local startedPromises: { [string]: any } = {}
 
 -- internal logging
-internal.log = {
-	print = function(msg: string): ()
-		if not LOGGING_ENABLED then
-			return
-		end
-		print(LOGGING_PREFIX .. msg)
-	end,
+function internal.log.print(msg: string): ()
+	if not LOGGING_ENABLED then
+		return
+	end
+	print(LOGGING_PREFIX .. msg)
+end
 
-	warn = function(msg: string): ()
-		if not LOGGING_ENABLED then
-			return
-		end
-		warn(LOGGING_PREFIX .. msg)
-	end,
+function internal.log.warn(msg: string): ()
+	if not LOGGING_ENABLED then
+		return
+	end
+	warn(LOGGING_PREFIX .. msg)
+end
 
-	error = function(msg: string): ()
-		if not LOGGING_ENABLED then
-			return
-		end
-		error(LOGGING_PREFIX .. msg)
-	end,
-}
+function internal.log.error(msg: string): ()
+	if not LOGGING_ENABLED then
+		return
+	end
+	error(LOGGING_PREFIX .. msg)
+end
 
 -- get instance name or fullname
 -- i lowkey implemented this cause i didn't want to print the whole
