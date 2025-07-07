@@ -87,6 +87,13 @@ function internal.log.print(msg: string): ()
 	print(LOGGING_PREFIX .. msg)
 end
 
+--[=[
+	sendings a warning to the console, automatically formatting it
+
+	@within internal
+	@param msg string 
+	@return ()
+]=]
 function internal.log.warn(msg: string): ()
 	if not LOGGING_ENABLED then
 		return
