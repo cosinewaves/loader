@@ -72,6 +72,14 @@ local loadedModules: { [string]: lifecycleModule } = {}
 local startedPromises: { [string]: any } = {}
 
 -- internal logging
+
+--[=[
+	prints the message to the console, automatically formatting it
+
+	@within internal
+	@param msg string 
+	@return ()
+]=]
 function internal.log.print(msg: string): ()
 	if not LOGGING_ENABLED then
 		return
