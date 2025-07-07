@@ -101,6 +101,13 @@ function internal.log.warn(msg: string): ()
 	warn(LOGGING_PREFIX .. msg)
 end
 
+--[=[
+	errors the message and halts execution
+
+	@within internal
+	@param msg string 
+	@return ()
+]=]
 function internal.log.error(msg: string): ()
 	if not LOGGING_ENABLED then
 		return
