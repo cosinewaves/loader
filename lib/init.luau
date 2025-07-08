@@ -161,8 +161,6 @@ internal.waitFor = function(name: string): any
 	end
 end
 
--- safely require + run lifecycle methods
-
 --[=[
 	safely require and run lifecycle methods
 
