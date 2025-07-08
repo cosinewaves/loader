@@ -109,10 +109,6 @@ function internal.log.error(msg: string): ()
 	error(LOGGING_PREFIX .. msg)
 end
 
--- get instance name or fullname
--- i lowkey implemented this cause i didn't want to print the whole
--- path name, however it could see useful in debug purposes
-
 --[=[
 	Returns a formatted name for the given instance, used primarily for logging and debugging.
 
