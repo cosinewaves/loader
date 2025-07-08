@@ -142,11 +142,14 @@ internal.change_env_const = function(envConstant: envConstants, newValue: any): 
 end
 
 --[=[
-	wait for a module to be loaded, then you can use promise methods, like ':andThen()' to do stuff in your module
+	Waits for the specified module to finish its `start` lifecycle before continuing.
+
+	Returns a promise that resolves when the target module has completed starting,
+	allowing dependent modules to sequence their initialization using methods like `:andThen()`.
 
 	@within internal
-	@param name string 
-	@return any
+	@param name string -- the name of the module to wait for
+	@return any -- a resolving or rejecting promise based on module availability
 ]=]
 internal.waitFor = function(name: string): any
 	local startPromise: any = startedPromises[name]
