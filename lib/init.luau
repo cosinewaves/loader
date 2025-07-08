@@ -121,11 +121,14 @@ internal.getInstanceName = function(instance: Instance): string
 end
 
 --[=[
-	change the loader's constants, used to modify the behaviour of loader at runtime
+	Dynamically updates one of the loader’s runtime configuration constants.
+
+	This allows toggling logging, changing the log prefix, or switching between 
+	instance names and full names in debug output.
 
 	@within internal
-	@param envConstant envConstants -- "LOGGING_ENABLED" | "LOGGING_PREFIX" | "USE_FULL_NAME"
-	@param newValue any
+	@param envConstant envConstants -- one of "LOGGING_ENABLED", "LOGGING_PREFIX", or "USE_FULL_NAME"
+	@param newValue any -- the new value to assign to the selected constant
 	@return ()
 ]=]
 internal.change_env_const = function(envConstant: envConstants, newValue: any): ()
