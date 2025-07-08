@@ -141,11 +141,6 @@ internal.change_env_const = function(envConstant: envConstants, newValue: any): 
 	end
 end
 
--- wait for a named module to finish starting;
--- for example, wait for PlayerService to start before starting
--- DataService - as loading data before player has properly
--- been setup will cause errors
-
 --[=[
 	wait for a module to be loaded, then you can use promise methods, like ':andThen()' to do stuff in your module
 
