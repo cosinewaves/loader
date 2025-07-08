@@ -162,11 +162,15 @@ internal.waitFor = function(name: string): any
 end
 
 --[=[
-	safely require and run lifecycle methods
+	Safely requires a module and executes its lifecycle methods (`init` and `start`).
+
+	If the module exports `init`, it is invoked immediately.
+	If it exports `start`, a start promise is created and tracked.
+	Also injects `waitFor` into the module so it can depend on others.
 
 	@within internal
-	@param module ModuleScript 
-	@return any
+	@param module ModuleScript -- the module to require and initialize
+	@return any -- a promise resolving to the required module
 ]=]
 internal.safeRequire = function(module: ModuleScript): any
 	local moduleName: string = internal.getInstanceName(module)
