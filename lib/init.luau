@@ -68,10 +68,10 @@ local startedPromises: { [string]: any } = {}
 -- internal logging
 
 --[=[
-	prints the message to the console, automatically formatting it
+	Prints a formatted message to the output console if logging is enabled.
 
 	@within internal
-	@param msg string 
+	@param msg string -- the message to print
 	@return ()
 ]=]
 function internal.log.print(msg: string): ()
@@ -82,10 +82,10 @@ function internal.log.print(msg: string): ()
 end
 
 --[=[
-	sendings a warning to the console, automatically formatting it
+	Sends a formatted warning message to the output console if logging is enabled.
 
 	@within internal
-	@param msg string 
+	@param msg string -- the warning message to display
 	@return ()
 ]=]
 function internal.log.warn(msg: string): ()
@@ -96,10 +96,10 @@ function internal.log.warn(msg: string): ()
 end
 
 --[=[
-	errors the message and halts execution
+	Raises a formatted error message and halts execution if logging is enabled.
 
 	@within internal
-	@param msg string 
+	@param msg string -- the error message to raise
 	@return ()
 ]=]
 function internal.log.error(msg: string): ()
