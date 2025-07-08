@@ -270,36 +270,36 @@ internal.load_modules = function(container: Instance, useDescendants: boolean, p
 end
 
 --[=[
-	load children of a instance
+	Loads child modules of a given container, applying an optional filter predicate.
 
 	@method load_children
 	@within loader
-	@param container Instance
-	@param predicate predicate<Instance>? 
-	@return any
+	@param container Instance -- the container whose children modules to load
+	@param predicate predicate<Instance>? -- optional filter to select which modules to load
+	@return any -- a promise resolving when all modules and their starts complete
 ]=]
 loader.load_children = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
 	return internal.load_modules(container, false, predicate) :: any
 end
 
 --[=[
-	load descendants of a module
+	Loads descendant modules of a given container, applying an optional filter predicate.
 
 	@method load_descendants
 	@within loader
-	@param container Instance
-	@param predicate predicate<Instance>? 
-	@return any
+	@param container Instance -- the container whose descendant modules to load
+	@param predicate predicate<Instance>? -- optional filter to select which modules to load
+	@return any -- a promise resolving when all modules and their starts complete
 ]=]
 loader.load_descendants = function(self: loader, container: Instance, predicate: predicate<Instance>?): any
 	return internal.load_modules(container, true, predicate) :: any
 end
 
 --[=[
-	expose internal class
+	Exposes the internal utility class, granting access to core loader functions and configuration.
 
 	@within loader
-	@return internal
+	@return internal -- the internal helper and configuration object
 ]=]
 loader.exposeInternal = function(): internal
 	return internal :: internal
