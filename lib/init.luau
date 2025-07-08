@@ -114,11 +114,11 @@ end
 -- path name, however it could see useful in debug purposes
 
 --[=[
-	formats the instance's name, used for debug purposes
+	Returns a formatted name for the given instance, used primarily for logging and debugging.
 
 	@within internal
-	@param instance instance -- the instance to find the name of
-	@return number -- formatted name
+	@param instance Instance -- the instance whose name or full name will be returned
+	@return string -- the formatted name (either `Name` or `FullName` depending on config)
 ]=]
 internal.getInstanceName = function(instance: Instance): string
 	return USE_FULL_NAME and instance:GetFullName() or instance.Name
