@@ -1,13 +1,8 @@
 --!strict
 --!optimize 2
 
--- finish docs, use ai to rewrite comments
--- add interface types
-
--- requirements
 local promise = require("./packages/promise")
 
--- types
 export type envConstants = "LOGGING_ENABLED" | "LOGGING_PREFIX" | "USE_FULL_NAME"
 export type predicate<T> = (T) -> boolean
 export type lifecycleModule = {
@@ -35,8 +30,6 @@ export type internal = {
 	load_modules: (container: Instance, useDescendants: boolean, predicate: predicate<Instance>?) -> any,
 }
 
--- metatables
-
 --[=[
 	@class loader
 
@@ -56,16 +49,12 @@ local loader = {} :: loader
 local internal = {} :: internal
 internal.log = {} :: log
 
--- constants
 local LOGGING_ENABLED: boolean = true
 local LOGGING_PREFIX: string = `({script.Name}::internal) `
 local USE_FULL_NAME: boolean = false
 
--- module tracking
 local loadedModules: { [string]: lifecycleModule } = {}
 local startedPromises: { [string]: any } = {}
-
--- internal logging
 
 --[=[
 	Prints a formatted message to the output console if logging is enabled.
