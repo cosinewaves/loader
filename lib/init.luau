@@ -219,13 +219,17 @@ internal.safeRequire = function(module: ModuleScript): any
 end
 
 --[=[
-	internal module loader function
+	Loads and initializes modules from a specified container, optionally including descendants,
+	and filters them using an optional predicate.
+
+	Each module is safely required, its lifecycle methods invoked, and start promises tracked.
+	Returns a promise that resolves after all modules and their start routines complete.
 
 	@within internal
-	@param container Instance
-	@param useDescendants boolean
-	@param predicate predicate<Instance>? 
-	@return any
+	@param container Instance -- the Roblox instance containing modules to load
+	@param useDescendants boolean -- whether to include all descendants (true) or only direct children (false)
+	@param predicate predicate<Instance>? -- optional filter function to select modules
+	@return any -- a promise resolving to true if all modules loaded successfully, false otherwise
 ]=]
 internal.load_modules = function(container: Instance, useDescendants: boolean, predicate: predicate<Instance>?): any
 	local containerName: string = internal.getInstanceName(container)
