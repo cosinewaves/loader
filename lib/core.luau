@@ -8,7 +8,7 @@ local types = require("./types")
 
 	a lightweight, lifecycle-aware & promise-based module loader for roblox. designed for modular architecture, dependency safety, and async initialisation.
 ]=]
-local loader = {} :: loader
+local loader = {} :: types.loader
 
 --[=[
 	Loads child modules of a given container, applying an optional filter predicate.
