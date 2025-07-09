@@ -171,26 +171,33 @@ internal.load_modules = function(
 	local instances: { Instance } = if useDescendants then container:GetDescendants() else container:GetChildren()
 	local filtered: { ModuleScript } = {}
 
-	for _: number, inst: Instance in ipairs(instances :: { Instance }) do
-		if inst:IsA("ModuleScript") and (not predicate or predicate(inst :: Instance)) then
+	for _, inst in ipairs(instances) do
+		if inst:IsA("ModuleScript") and (not predicate or predicate(inst)) then
 			table.insert(filtered, inst)
 		end
 	end
 
-	local moduleCount: number = #filtered
-	local promises: { any } = {}
-	for _: number, moduleScript: ModuleScript in ipairs(filtered :: { ModuleScript }) do
-		table.insert(promises, internal.safeRequire(moduleScript :: ModuleScript))
+	local moduleCount = #filtered
+	local promises = {}
+
+	for _, moduleScript in ipairs(filtered) do
+		table.insert(promises, internal.safeRequire(moduleScript))
 	end
 
 	return promise
 		.all(promises)
 		:andThen(function()
-			return promise.all(startedPromises) :: any
+			-- Wait for all modules' "start" lifecycle to complete
+			local waitStartPromises = {}
+			for _, moduleScript in ipairs(filtered) do
+				local name = internal.getInstanceName(moduleScript)
+				table.insert(waitStartPromises, lifecycles.waitFor(name, "start"))
+			end
+			return promise.all(waitStartPromises)
 		end)
 		:andThen(function()
 			if LOGGING_ENABLED :: boolean then
-				local elapsed: number = (os.clock() - t0) * 1000
+				local elapsed = (os.clock() - t0) * 1000
 				internal.log.print(`successfully loaded {moduleCount} modules in {string.format("%.2f", elapsed)}ms`)
 			end
 			return true
@@ -198,7 +205,7 @@ internal.load_modules = function(
 		:catch(function(err)
 			internal.log.warn(`failed to load one or more modules from {containerName}: {err}`)
 			return false
-		end) :: any
+		end)
 end
 
 return internal
