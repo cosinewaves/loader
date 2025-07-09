@@ -25,6 +25,7 @@ local lifecycleMap: {
 --[=[
 	Adds a new lifecycle method name that modules can define and be invoked automatically.
 	
+	@within lifecycles
 	@param name string -- the name of the lifecycle method (e.g., "shutdown")
 ]=]
 function lifecycles.register(name: string)
@@ -37,6 +38,7 @@ end
 	Connects and runs all registered lifecycle methods on the given module.
 	Returns a table of promises keyed by lifecycle name.
 	
+	@within lifecycles
 	@param name string -- the name of the module (used as key)
 	@param module types.lifecycleModule -- the module to connect
 	@param waitForFn ((name: string) -> any)? -- optional waitFor function to inject
@@ -80,6 +82,7 @@ end
 --[=[
 	Disconnects lifecycle promises and cleanup for a given module by name.
 	
+	@within lifecycles
 	@param name string -- the module name to disconnect
 ]=]
 function lifecycles.disconnect(name: string): ()
@@ -89,6 +92,7 @@ end
 --[=[
 	Waits for a specific lifecycle stage (e.g., "start") of a named module.
 	
+	@within lifecycles
 	@param name string -- the module name
 	@param lifecycle string -- the lifecycle stage to wait for (e.g., "start")
 	@return any -- the associated promise, or rejected promise if missing
@@ -111,6 +115,7 @@ end
 	Returns all registered lifecycle names (in execution order).
 	Useful for debugging or adding logic externally.
 	
+	@within lifecycles
 	@return { string } -- list of lifecycle method names
 ]=]
 function lifecycles.getRegistered(): { string }
