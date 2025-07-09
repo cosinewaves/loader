@@ -10,13 +10,6 @@ local promise = require("./packages/promise")
 ]=]
 local loader = {} :: loader
 
-local LOGGING_ENABLED: boolean = true
-local LOGGING_PREFIX: string = `({script.Name}::internal) `
-local USE_FULL_NAME: boolean = false
-
-local loadedModules: { [string]: lifecycleModule } = {}
-local startedPromises: { [string]: any } = {}
-
 --[=[
 	Loads child modules of a given container, applying an optional filter predicate.
 

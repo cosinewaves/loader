@@ -3,6 +3,13 @@
 local types = require("./types")
 local promise = require("../packages/promise")
 
+local LOGGING_ENABLED: boolean = true
+local LOGGING_PREFIX: string = `({script.Name}::internal) `
+local USE_FULL_NAME: boolean = false
+
+local loadedModules: { [string]: types.lifecycleModule } = {}
+local startedPromises: { [string]: any } = {}
+
 --[=[
 	@class internal
 
