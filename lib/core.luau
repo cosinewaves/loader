@@ -36,15 +36,4 @@ loader.load_descendants = function(self: types.loader, container: Instance, pred
 	return internal.load_modules(container, true, predicate) :: any
 end
 
---[=[
-	Exposes the internal utility class, granting access to core loader functions and configuration.
-
-	@deprecated
-	@within loader
-	@return internal -- the internal helper and configuration object
-]=]
-loader.exposeInternal = function(): types.internal
-	return internal :: types.internal
-end
-
 return loader
