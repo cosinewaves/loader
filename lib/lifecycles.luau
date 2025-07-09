@@ -60,7 +60,6 @@ function lifecycles.bindSignal(lifecycleName: string, signal: RBXScriptSignal)
 					if ok then
 						resolve(result)
 					else
-						types.log.warn(`lifecycle signal "{lifecycleName}" failed for module {name}: {result}`)
 						reject(result)
 					end
 				end)
