@@ -9,8 +9,8 @@ export type lifecycleModule = {
 	[string]: any,
 }
 export type loader = {
-	load_children: (self: loader, container: Instance, predicate: predicate<Instance>?) -> any,
-	load_descendants: (self: loader, container: Instance, predicate: predicate<Instance>?) -> any,
+	load_children: (container: Instance, predicate: predicate<Instance>?) -> any,
+	load_descendants: (container: Instance, predicate: predicate<Instance>?) -> any,
 	exposeInternal: () -> internal,
 }
 export type log = {
