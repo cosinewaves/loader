@@ -39,6 +39,7 @@ end
 --[=[
 	Exposes the internal utility class, granting access to core loader functions and configuration.
 
+	@deprecated
 	@within loader
 	@return internal -- the internal helper and configuration object
 ]=]
