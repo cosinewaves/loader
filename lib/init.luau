@@ -1,5 +1,4 @@
 --!strict
---!optimize 2
 
 local core = require("@self/core")
 local types = require("@self/types")
