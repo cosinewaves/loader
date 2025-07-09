@@ -86,7 +86,7 @@ end
 	@param newValue any -- the new value to assign to the selected constant
 	@return ()
 ]=]
-internal.change_env_const = function(envConstant: envConstants, newValue: any): ()
+internal.change_env_const = function(envConstant: types.envConstants, newValue: any): ()
 	if envConstant == "LOGGING_ENABLED" then
 		LOGGING_ENABLED = newValue
 	elseif envConstant == "LOGGING_PREFIX" then
@@ -138,8 +138,8 @@ internal.safeRequire = function(module: ModuleScript): any
 		end
 
 		internal.log.print(`required module: {moduleName}`)
-		local mod: lifecycleModule = result
-		loadedModules[moduleName] = mod :: lifecycleModule
+		local mod: types.lifecycleModule = result
+		loadedModules[moduleName] = mod :: types.lifecycleModule
 
 		-- add waitFor to module so they can call it internally
 		mod.waitFor = internal.waitFor
@@ -186,7 +186,11 @@ end
 	@param predicate predicate<Instance>? -- optional filter function to select modules
 	@return any -- a promise resolving to true if all modules loaded successfully, false otherwise
 ]=]
-internal.load_modules = function(container: Instance, useDescendants: boolean, predicate: predicate<Instance>?): any
+internal.load_modules = function(
+	container: Instance,
+	useDescendants: boolean,
+	predicate: types.predicate<Instance>?
+): any
 	local containerName: string = internal.getInstanceName(container)
 	internal.log.print(`{if useDescendants then "loading descendants" else "loading children"} in {containerName}`)
 
