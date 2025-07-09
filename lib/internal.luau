@@ -5,7 +5,7 @@ local promise = require("../packages/promise")
 local lifecycles = require("./lifecycles")
 
 local LOGGING_ENABLED: boolean = true
-local LOGGING_PREFIX: string = `({script.Name}::internal) `
+local LOGGING_PREFIX: string = `(loader::internal) `
 local USE_FULL_NAME: boolean = false
 
 local startedPromises: { [string]: any } = {}
