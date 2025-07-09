@@ -8,7 +8,7 @@ export type lifecycleModule = {
 	waitFor: ((moduleName: string) -> any)?,
 	[string]: any,
 }
-export type loader = {
+export type core = {
 	load_children: (container: Instance, predicate: predicate<Instance>?) -> any,
 	load_descendants: (container: Instance, predicate: predicate<Instance>?) -> any,
 }
