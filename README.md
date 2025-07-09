@@ -12,8 +12,6 @@ A lightweight, lifecycle-aware module loader for Roblox. This utility ensures a 
 - ⏳ **Async Safety**: Modules are `required` safely, and `start()` is deferred until `init()` of all modules is complete.
 - 🧩 **Dependency Coordination**: Use `waitFor("ModuleName")` to safely depend on another module’s completion.
 - 📦 **Batch Loading**: Load all children or descendant `ModuleScripts` from a container.
-- 🪛 **Runtime Configuration**: Enable logs, switch to full instance names, or change logging prefix dynamically.
-- 🧪 **Exposed Internals**: Useful for extending behavior, debugging, or hooking into loader internals.
 
 ---
 
@@ -29,7 +27,7 @@ local Loader = require(path.to.loader)
 
 ## 📜 Module Lifecycle Order
 
-Each module can export the following optional functions:
+Each module can export the following optional functions and you can include your own:
 
 ```lua
 init(): () -> ()
@@ -115,42 +113,6 @@ Loader:load_children(script.Modules, isCoreModule)
 ```
 
 ⸻
-
-```lua
-loader.exposeInternal(): internal
--- Reveals internal utilities for advanced use or debugging.
-```
-
-```lua
-local internal = Loader.exposeInternal()
-internal.change_env_const("USE_FULL_NAME", true)
-```
-
-⸻
-
-🔧 Internal API (via exposeInternal())
-
-```lua
--- Logging
-log.print(msg: string)
-log.warn(msg: string)
-log.error(msg: string)
-```
-
-```lua
--- Configuration
-change_env_const(key: "LOGGING_ENABLED" | "LOGGING_PREFIX" | "USE_FULL_NAME", value: any)
-```
-
-```lua
--- Module Tools
-getInstanceName(instance: Instance): string
-waitFor(moduleName: string): Promise
-safeRequire(moduleScript: ModuleScript): Promise
-```
-
-⸻
-
 ✅ Best Practices
 
 - ✅ Use `init()` for setup logic and `start()` for beginning execution.
