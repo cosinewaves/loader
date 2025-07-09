@@ -3,51 +3,12 @@
 
 local promise = require("./packages/promise")
 
-export type envConstants = "LOGGING_ENABLED" | "LOGGING_PREFIX" | "USE_FULL_NAME"
-export type predicate<T> = (T) -> boolean
-export type lifecycleModule = {
-	init: (() -> any)?,
-	start: (() -> any)?,
-	waitFor: ((moduleName: string) -> any)?,
-	[string]: any,
-}
-export type loader = {
-	load_children: (self: loader, container: Instance, predicate: predicate<Instance>?) -> any,
-	load_descendants: (self: loader, container: Instance, predicate: predicate<Instance>?) -> any,
-	exposeInternal: () -> internal,
-}
-export type log = {
-	print: (msg: string) -> (),
-	warn: (msg: string) -> (),
-	error: (msg: string) -> (),
-}
-export type internal = {
-	log: log,
-	safeRequire: (module: ModuleScript) -> any,
-	getInstanceName: (instance: Instance) -> string,
-	change_env_const: (envConstant: envConstants, newValue: any) -> (),
-	waitFor: (name: string) -> any,
-	load_modules: (container: Instance, useDescendants: boolean, predicate: predicate<Instance>?) -> any,
-}
-
 --[=[
 	@class loader
 
 	a lightweight, lifecycle-aware & promise-based module loader for roblox. designed for modular architecture, dependency safety, and async initialisation.
 ]=]
 local loader = {} :: loader
-
---[=[
-	@class internal
-
-	The `internal` class contains core utility functions, configurations, and lifecycle mechanisms
-	used internally by the loader. These include logging tools, safe module requiring with lifecycle
-	method execution (`init`, `start`), environment setting overrides, module tracking, and dependency
-	waiting. This class is exposed through `loader.exposeInternal()` for advanced use cases such as 
-	debugging, testing, or extending the loader’s behavior.
-]=]
-local internal = {} :: internal
-internal.log = {} :: log
 
 local LOGGING_ENABLED: boolean = true
 local LOGGING_PREFIX: string = `({script.Name}::internal) `
