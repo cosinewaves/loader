@@ -11,6 +11,9 @@ local promise = require("../packages/promise")
 ]=]
 local lifecycles = {}
 
+-- Stores signal connections for signal-based lifecycles
+local signalConnections: { [string]: RBXScriptConnection } = {}
+
 -- Stores all available lifecycle keys to execute and their execution order
 local registeredLifecycles: { string } = { "init", "start" }
 
@@ -32,6 +35,42 @@ function lifecycles.register(name: string)
 	if not table.find(registeredLifecycles, name) then
 		table.insert(registeredLifecycles, name)
 	end
+end
+
+--[=[
+	Binds a lifecycle method to a RBXScriptSignal. When the signal fires, the method will be invoked
+	on all connected modules that define it.
+
+	@within lifecycles
+	@param lifecycleName string -- the lifecycle method to invoke (e.g., "shutdown")
+	@param signal RBXScriptSignal -- the RBXScriptSignal to connect
+]=]
+function lifecycles.bindSignal(lifecycleName: string, signal: RBXScriptSignal)
+	if signalConnections[lifecycleName] then
+		signalConnections[lifecycleName]:Disconnect()
+	end
+
+	signalConnections[lifecycleName] = signal:Connect(function()
+		for name, entry in pairs(lifecycleMap) do
+			local module = entry.module
+			local method = rawget(module, lifecycleName)
+			if typeof(method) == "function" then
+				local lifecyclePromise = promise.new(function(resolve, reject)
+					local ok, result = pcall(method)
+					if ok then
+						resolve(result)
+					else
+						types.log.warn(`lifecycle signal "{lifecycleName}" failed for module {name}: {result}`)
+						reject(result)
+					end
+				end)
+
+				entry.promises[lifecycleName] = lifecyclePromise
+			end
+		end
+	end)
+
+	lifecycles.register(lifecycleName)
 end
 
 --[=[
@@ -85,6 +124,10 @@ end
 ]=]
 function lifecycles.disconnect(name: string): ()
 	lifecycleMap[name] = nil
+	if signalConnections[name] then
+		signalConnections[name]:Disconnect()
+		signalConnections[name] = nil
+	end
 end
 
 --[=[
