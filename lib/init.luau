@@ -1,4 +1,10 @@
 --!strict
 --!optimize 2
 
-return loader :: loader
+local core = require("@self/core")
+local internal = require("@self/internal")
+local types = require("@self/types")
+
+return {
+	core.
+}

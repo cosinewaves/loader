@@ -45,3 +45,5 @@ end
 loader.exposeInternal = function(): types.internal
 	return internal :: types.internal
 end
+
+return loader
