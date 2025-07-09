@@ -57,11 +57,9 @@ function lifecycles.connect(
 	end
 
 	for _, lifecycleName in ipairs(registeredLifecycles) do
-		local method = module[lifecycleName]
-		if typeof(method) == "function" then
-			-- Wrap each lifecycle method in a promise
+		if rawget(module, lifecycleName) and typeof(module[lifecycleName]) == "function" then
 			promiseMap[lifecycleName] = promise.new(function(resolve, reject)
-				local ok, result = pcall(method)
+				local ok, result = pcall(module[lifecycleName])
 				if ok then
 					resolve(result)
 				else
