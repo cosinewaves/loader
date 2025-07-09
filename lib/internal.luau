@@ -187,11 +187,14 @@ internal.load_modules = function(
 	return promise
 		.all(promises)
 		:andThen(function()
-			-- Wait for all modules' "start" lifecycle to complete
+			-- Wait only for modules that define a "start" lifecycle
 			local waitStartPromises = {}
 			for _, moduleScript in ipairs(filtered) do
 				local name = internal.getInstanceName(moduleScript)
-				table.insert(waitStartPromises, lifecycles.waitFor(name, "start"))
+				local success, mod = pcall(require, moduleScript)
+				if success and typeof(mod) == "table" and rawget(mod, "start") and typeof(mod.start) == "function" then
+					table.insert(waitStartPromises, lifecycles.waitFor(name, "start"))
+				end
 			end
 			return promise.all(waitStartPromises)
 		end)
