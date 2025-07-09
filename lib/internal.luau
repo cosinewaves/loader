@@ -2,12 +2,12 @@
 
 local types = require("./types")
 local promise = require("../packages/promise")
+local lifecycles = require("./lifecycles")
 
 local LOGGING_ENABLED: boolean = true
 local LOGGING_PREFIX: string = `({script.Name}::internal) `
 local USE_FULL_NAME: boolean = false
 
-local loadedModules: { [string]: types.lifecycleModule } = {}
 local startedPromises: { [string]: any } = {}
 
 --[=[
@@ -127,49 +127,23 @@ end
 	@return any -- a promise resolving to the required module
 ]=]
 internal.safeRequire = function(module: ModuleScript): any
-	local moduleName: string = internal.getInstanceName(module)
+	local moduleName = internal.getInstanceName(module)
 	return promise.new(function(resolve, reject)
-		local ok: boolean, result: any = pcall(require, module)
-		if not ok :: boolean then
+		local ok, result = pcall(require, module)
+		if not ok then
 			internal.log.warn(`failed to require {moduleName}: {result}`)
-			reject(result)
-			return
+			return reject(result)
 		end
 
 		internal.log.print(`required module: {moduleName}`)
-		local mod: types.lifecycleModule = result
-		loadedModules[moduleName] = mod :: types.lifecycleModule
+		local mod = result :: types.lifecycleModule
 
-		-- add waitFor to module so they can call it internally
-		mod.waitFor = internal.waitFor
+		-- add waitFor
+		local _promises = lifecycles.connect(moduleName, mod, internal.waitFor)
 
-		-- init lifecycle
-		local initOk: boolean, initErr: boolean = true, nil
-		if typeof(mod.init) == "function" then
-			internal.log.print(`calling init on {moduleName}`)
-			initOk, initErr = pcall(mod.init)
-			if not initOk :: boolean then
-				internal.log.warn(`init failed for {moduleName}: {initErr}`)
-			end
-		end
-
-		-- prepare start promise but don't run yet
-		startedPromises[moduleName] = promise.new(function(startResolve)
-			if typeof(mod.start) == "function" then
-				internal.log.print(`calling start on {moduleName}`)
-				local success: boolean, err: any = pcall(mod.start)
-				if not success :: boolean then
-					internal.log.warn(`start failed for {moduleName}: {err}`)
-					return
-				end
-			end
-			startResolve(true)
-			return
-		end)
-
+		-- resolve once module is required; start happens asynchronously inside lifecycles.connect
 		resolve(mod)
-		return
-	end) :: any
+	end)
 end
 
 --[=[
