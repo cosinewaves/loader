@@ -11,7 +11,6 @@ export type lifecycleModule = {
 export type loader = {
 	load_children: (container: Instance, predicate: predicate<Instance>?) -> any,
 	load_descendants: (container: Instance, predicate: predicate<Instance>?) -> any,
-	exposeInternal: () -> internal,
 }
 export type log = {
 	print: (msg: string) -> (),
