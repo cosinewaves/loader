@@ -6,6 +6,9 @@
     "ReplicatedStorage": {
       "loader": {
         "$path": "lib"
+      },
+      "packages": {
+        "$path": "packages"
       }
     }
   }
