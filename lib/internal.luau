@@ -8,6 +8,8 @@ local LOGGING_ENABLED: boolean = true
 local LOGGING_PREFIX: string = `(loader::internal) `
 local USE_FULL_NAME: boolean = false
 
+local DEFAULT_PRIORITY: number = 1
+
 local startedPromises: { [string]: any } = {}
 
 --[=[
@@ -161,7 +163,7 @@ internal.get_priority = function(module: ModuleScript): number
 			return pr
 		end
 	end
-	return 1 -- default priority when none provided or require fails
+	return DEFAULT_PRIORITY -- default priority when none provided or require fails
 end
 
 --[=[
