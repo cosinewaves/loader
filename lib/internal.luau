@@ -146,6 +146,13 @@ internal.safeRequire = function(module: ModuleScript): any
 	end)
 end
 
+--[=[
+	Returns the priority of a given module script, checking if it has the "priority" key and returning it.
+
+	@within internal
+	@param module ModuleScript -- the module to check
+	@return number
+]=]
 internal.get_priority = function(module: ModuleScript): number
 	local ok, mod = pcall(require, module)
 	if ok and typeof(mod) == "table" then
