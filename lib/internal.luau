@@ -146,6 +146,17 @@ internal.safeRequire = function(module: ModuleScript): any
 	end)
 end
 
+internal.get_priority = function(module: ModuleScript): number
+	local ok, mod = pcall(require, modScript)
+	if ok and typeof(mod) == "table" then
+		local pr = rawget(mod, "priority")
+		if typeof(pr) == "number" then
+			return pr
+		end
+	end
+	return 1 -- default priority when none provided or require fails
+end
+
 --[=[
 	Loads and initializes modules from a specified container, optionally including descendants,
 	and filters them using an optional predicate.
@@ -177,6 +188,12 @@ internal.load_modules = function(
 		end
 	end
 
+	-- Sort modules by declared priority (higher number = higher priority)
+	table.sort(filtered, function(a: ModuleScript, b: ModuleScript): boolean
+		return internal.get_priority(a) > internal.get_priority(b)
+	end)
+
+	internal.log.print(`sorted modules by priority (highest first)`)
 	local moduleCount = #filtered
 	local promises = {}
 

@@ -24,6 +24,7 @@ export type internal = {
 	change_env_const: (envConstant: envConstants, newValue: any) -> (),
 	waitFor: (name: string) -> any,
 	load_modules: (container: Instance, useDescendants: boolean, predicate: predicate<Instance>?) -> any,
+	get_priority: (module: ModuleScript) -> number,
 }
 
 return nil
