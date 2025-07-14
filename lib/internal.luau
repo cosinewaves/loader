@@ -1,12 +1,15 @@
 --!strict
+local RunService = game:GetService("RunService")
 
 local types = require("./types")
 local promise = require("../packages/promise")
 local lifecycles = require("./lifecycles")
 
-local LOGGING_ENABLED: boolean = true
+local LOGGING_ENABLED: boolean = false
 local LOGGING_PREFIX: string = `(loader::internal) `
 local USE_FULL_NAME: boolean = false
+
+local DEFAULT_PRIORITY: number = 1
 
 local startedPromises: { [string]: any } = {}
 
@@ -147,11 +150,33 @@ internal.safeRequire = function(module: ModuleScript): any
 end
 
 --[=[
+	Returns the priority of a given module script, checking if it has the "priority" key and returning it.
+
+	@within internal
+	@param module ModuleScript -- the module to check
+	@return number
+]=]
+internal.get_priority = function(module: ModuleScript): number
+	local ok, mod = pcall(require, module)
+	if ok and typeof(mod) == "table" then
+		local pr = rawget(mod, "priority")
+		if typeof(pr) == "number" then
+			return pr
+		end
+	end
+	return DEFAULT_PRIORITY -- default priority when none provided or require fails
+end
+
+--[=[
 	Loads and initializes modules from a specified container, optionally including descendants,
 	and filters them using an optional predicate.
 
 	Each module is safely required, its lifecycle methods invoked, and start promises tracked.
 	Returns a promise that resolves after all modules and their start routines complete.
+
+	The priority of each module is accounted for, with an optional key inside the module tabled,
+	called "Priority". Higher priority number will mean that the module is loaded and started before other's
+	with less priority.
 
 	@within internal
 	@param container Instance -- the Roblox instance containing modules to load
@@ -177,6 +202,12 @@ internal.load_modules = function(
 		end
 	end
 
+	-- Sort modules by declared priority (higher number = higher priority)
+	table.sort(filtered, function(a: ModuleScript, b: ModuleScript): boolean
+		return internal.get_priority(a) > internal.get_priority(b)
+	end)
+
+	internal.log.print(`sorted modules by priority (highest first)`)
 	local moduleCount = #filtered
 	local promises = {}
 
@@ -209,6 +240,10 @@ internal.load_modules = function(
 			internal.log.warn(`failed to load one or more modules from {containerName}: {err}`)
 			return false
 		end)
+end
+
+if RunService:IsStudio() then
+	LOGGING_ENABLED = true
 end
 
 return internal
