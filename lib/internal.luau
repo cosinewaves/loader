@@ -5,7 +5,7 @@ local types = require("./types")
 local promise = require("../packages/promise")
 local lifecycles = require("./lifecycles")
 
-local LOGGING_ENABLED: boolean = true
+local LOGGING_ENABLED: boolean = false
 local LOGGING_PREFIX: string = `(loader::internal) `
 local USE_FULL_NAME: boolean = false
 
