@@ -1,4 +1,5 @@
 --!strict
+local RunService = game:GetService("RunService")
 
 local types = require("./types")
 local promise = require("../packages/promise")
@@ -239,6 +240,10 @@ internal.load_modules = function(
 			internal.log.warn(`failed to load one or more modules from {containerName}: {err}`)
 			return false
 		end)
+end
+
+if RunService:IsStudio() then
+	LOGGING_ENABLED = true
 end
 
 return internal
