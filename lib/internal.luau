@@ -173,6 +173,10 @@ end
 	Each module is safely required, its lifecycle methods invoked, and start promises tracked.
 	Returns a promise that resolves after all modules and their start routines complete.
 
+	The priority of each module is accounted for, with an optional key inside the module tabled,
+	called "Priority". Higher priority number will mean that the module is loaded and started before other's
+	with less priority.
+
 	@within internal
 	@param container Instance -- the Roblox instance containing modules to load
 	@param useDescendants boolean -- whether to include all descendants (true) or only direct children (false)
