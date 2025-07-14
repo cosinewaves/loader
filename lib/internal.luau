@@ -147,7 +147,7 @@ internal.safeRequire = function(module: ModuleScript): any
 end
 
 internal.get_priority = function(module: ModuleScript): number
-	local ok, mod = pcall(require, modScript)
+	local ok, mod = pcall(require, module)
 	if ok and typeof(mod) == "table" then
 		local pr = rawget(mod, "priority")
 		if typeof(pr) == "number" then
